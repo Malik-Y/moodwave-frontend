@@ -70,3 +70,7 @@ button:focus-visible {
   }
 }
 
+h1
+{
+    font-size: 7em;
+}
