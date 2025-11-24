@@ -8,7 +8,7 @@ const moods = [
 function MoodSelector () {
     return (
         <>
-            <h3 className='italic text-4xl text-center text-white/60 font-bold opacity-80 mb-5'>How are you feeling today?</h3>
+            <h3 className='italic text-4xl mt-70 text-center text-white/60 font-bold opacity-80 mb-5'>How are you feeling today?</h3>
                 <p className='text-center font-light text-white/60 capitalize text-sm'>CHOOSE ~ FEEL ~ EXPERIENCE</p>
 
                 {/*Center of this section*/}

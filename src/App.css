@@ -8,6 +8,93 @@
 
 }
 
+.glass-input-card {
+  width: 260px;
+  height: 50px;
+  background: rgba(255, 255, 255, 0);
+    border-radius: 16px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(7.4px);
+    -webkit-backdrop-filter: blur(7.4px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  position: relative;
+  overflow: hidden;
+  text-align: center;
+}
+
+.glass-input-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.8),
+    transparent
+  );
+}
+
+.glass-input-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1px;
+  height: 100%;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.8),
+    transparent,
+    rgba(255, 255, 255, 0.3)
+  );
+}
+
+.login-button {
+   width: 240px;
+  height: 50px;
+  background: rgba(255, 255, 255, 0);
+    border-radius: 20px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(7.4px);
+    -webkit-backdrop-filter: blur(7.4px);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  position: relative;
+  overflow: hidden;
+}
+
+.login-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.8),
+    transparent
+  );
+}
+
+.login-button::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 1px;
+  height: 100%;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.8),
+    transparent,
+    rgba(255, 255, 255, 0.3)
+  );
+}
+
 
 .glass
 {
@@ -26,6 +113,12 @@ border: 1px solid rgba(255, 0, 218, 0.3);
     font-style: italic;
     text-shadow: 0 0 10px;
     letter-spacing: 0.05em;
+}
+
+.mainContainer{
+    background-color: #FFC7A7;
+    font-family: 'Georgia', serif;
+    font-style: italic;
 }
 
 

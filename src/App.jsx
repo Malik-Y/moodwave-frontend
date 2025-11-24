@@ -9,9 +9,11 @@ function App() {
 
   return (
     <>
-        <div className='relative  overflow-hidden flex flex-col justify-start text-center z-10 '>
-            <Header/>
+
+        <Header/>
             {/*Section 1:Welcome and Orb*/}
+
+
 
             {/*Orb*/}
             <MainOrb/>
@@ -24,10 +26,6 @@ function App() {
 
             {/*Section 3:Playlists*/}
 
-
-
-
-        </div>
     </>
 
 
