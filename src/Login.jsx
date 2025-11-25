@@ -2,7 +2,7 @@ import { useState } from 'react'
 import './App.css'
 import Header from "./components/Header.jsx";
 import MainOrb from './components/mainOrb.jsx';
-import RandomLyric from "./components/Template.jsx";
+import RandomLyric from "./components/RandomLyric.jsx";
 import MoodSelector from "./components/MoodSelector.jsx";
 
 function Login() {
@@ -25,11 +25,14 @@ function Login() {
   return (
     <>
         <div className='mt-20 rounded-3xl backdrop-blur-3xl shadow-lg drop-shadow-2xl bg-pink-200/10 -z-10 overflow-hidden px-10 py-10 flex flex-col justify-start text-center '>
-
-
+            <div className='header'>
+                <div className='flex flex-col text-center'>
+                <h1 className=' text-center  mb-1 italic text-purple-300 min title'>MoodWave</h1>
+                <h2 className=' text-center italic text-white/50 text-sm font-light'>YOUR SAFE HAVEN</h2>
+            </div>
+            </div>
             <div className='p-8 md:p-10 relative overflow-hidden '>
                 <div className='mx-auto mb-10 scale-85 z-1'>
-                    <Header />
                 </div>
                     <div className='mainBod flex-col mt-20 scale-115 mb-10'>
                     <h2 className='mb-5 content-center mr-53 '>Email:</h2>

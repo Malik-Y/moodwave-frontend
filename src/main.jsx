@@ -4,6 +4,7 @@ import {createBrowserRouter, RouterProvider} from 'react-router-dom'
 import './index.css'
 import App from './App.jsx'
 import Login from './Login.jsx'
+import Musicplayer from "./Musicplayer.jsx";
 
 let loggedIn=localStorage.getItem('loggedIn');
 
@@ -19,6 +20,10 @@ const router = createBrowserRouter([
     path: "/login",
     element: !loggedIn ? <Login /> : <App/>,
   },
+  {
+    path: '/Musicplayer',
+    element: <Musicplayer/>
+  }
 ]);
 
 
