@@ -4,6 +4,7 @@ import Header from "./components/Header.jsx";
 import MainOrb from './components/mainOrb.jsx';
 import RandomLyric from "./components/RandomLyric.jsx";
 import MoodSelector from "./components/MoodSelector.jsx";
+import Galaxy from "./components/Galaxy.jsx";
 
 function Login() {
 
@@ -23,8 +24,19 @@ function Login() {
  }
 
   return (
-    <>
-        <div className='mt-20 rounded-3xl backdrop-blur-3xl shadow-lg drop-shadow-2xl bg-pink-200/10 -z-10 overflow-hidden px-10 py-10 flex flex-col justify-start text-center '>
+    <><div className="relative w-screen min-h-screen overflow-x-hidden flex justify-center items-center">
+                <Galaxy
+
+                    mouseRepulsion={false}
+                    mouseInteraction={false}
+                    density={2.5}
+                    glowIntensity={0.5}
+                    saturation={0.8}
+                    hueShift={101}
+                />
+         <div className="max-w-3xl w-full mx-auto mt-10 mb-10 px-10 py-10
+                    rounded-3xl backdrop-blur-3xl shadow-lg bg-pink-200/40
+                    relative z-10">
             <div className='header'>
                 <div className='flex flex-col text-center'>
                 <h1 className=' text-center  mb-1 italic text-purple-300 min title'>MoodWave</h1>
@@ -53,6 +65,7 @@ function Login() {
 
             </div>
 
+        </div>
         </div>
     </>
 
