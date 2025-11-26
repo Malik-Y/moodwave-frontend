@@ -3,7 +3,7 @@ import profile from './assets/profile.png'
 function Header(){
     return (
     <>
-        <div className='flex justify-between items-center px-6 mt-6 gap-x-140'>
+        <div className='flex justify-between items-center px-6  gap-x-140'>
             <div className=' w-12 flex justify-end logo'>
                 <img src={profile}  alt='Profile' />
             </div>

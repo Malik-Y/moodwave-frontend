@@ -4,18 +4,7 @@
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
   font-weight: 400;
-  background-blend-mode: overlay;
-     color-scheme: light dark;
-   background-image: linear-gradient(to bottom, #342271 0%, #715d5d 100%);
-    z-index: -1;
-    background-filter: blur(1005px);
-    -webkit-backdrop-filter:blur(5000px);
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-    max-width: 100%;
-    max-height: 100%;
+
 }
 
 a {
