@@ -328,5 +328,5 @@ export default function Galaxy({
     transparent
   ]);
 
-  return <div ref={ctnDom} className="absolute inset-0  w-screen h-screen" {...rest} />;
+  return <div ref={ctnDom} className="absolute inset-0 " {...rest} />;
 }

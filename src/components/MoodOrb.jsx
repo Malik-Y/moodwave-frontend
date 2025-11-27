@@ -29,11 +29,11 @@ const moodConfig = {
   },
 };
 
-export function MoodOrb({ mood, focus = false, onClick }) {
+export default function MoodOrb({ mood, focus = false, onClick }) {
   const config = moodConfig[mood];
 
   return (
-    <div className="relative flex items-center mb-5 justify-center">
+    <div className="relative flex items-center justify-center">
 
       {/* ⭐ OUTER GLOW RINGS */}
       <motion.div
@@ -102,17 +102,18 @@ export function MoodOrb({ mood, focus = false, onClick }) {
       {/* ⭐ MAIN ORB BUTTON */}
       <motion.button
         onClick={onClick}
-        whileHover={{ scale: focus ? 1.05 : 1.08 }}
+        whileHover={{ scale: focus ? 1.05 : 0.8}}
         whileTap={{ scale: 0.95 }}
         animate={{
-          scale: focus ? 1.15 : 1,
+          scale: focus ? 1.05 : 0.8,
           filter: focus ? "brightness(1.3)" : "brightness(1)",
         }}
         transition={{ duration: 0.35 }}
-        className="relative flex items-center justify-center cursor-pointer group"
+        className="relative flex items-center  justify-center cursor-pointer group"
         style={{
-          width: focus ? 330 : 300,
+          width: focus ? 380 : 350,
           height: focus ? 330 : 300,
+          mt: 15,
         }}
       >
         {/* Glass ring 1 */}

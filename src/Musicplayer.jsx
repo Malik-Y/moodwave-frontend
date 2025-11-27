@@ -1,7 +1,7 @@
 import {useState} from 'react'
 import './App.css'
 import Header from "./components/Header.jsx";
-import MainOrb from './components/mainOrb.jsx';
+import HomePage from './components/HomePage';
 import RandomLyric from "./components/RandomLyric.jsx";
 import MoodSelector from "./components/MoodSelector.jsx";
 import ProfileIcon from "./components/assets/profile.png"
@@ -18,7 +18,7 @@ const mood = location.state?.mood || "Energized";
 
     return (
         <>
-            <div className="relative w-screen  h-screen overflow-hidden">
+            <div className="relative w-screen h-screen overflow-hidden">
                 <Galaxy
                     mouseRepulsion={false}
                     mouseInteraction={false}
@@ -29,57 +29,54 @@ const mood = location.state?.mood || "Energized";
                 />
 
 
-                <div className=" w-full text-white h-screen">
-                    <div className='flex flex-col items-center '>
-                        <div className='flex flex-col items-center justify-center mt-10 '>
-                            <div
-                                className=' flex justify-center items-center w-full max-w-[900px] gap-x-180 flex-row mb-20'>
-                                <div className='Nav glass px-5 py-3'>
-                                    <Link to='/'>
-                                        <p className=' font-bold'>Back</p>
-                                    </Link>
-                                </div>
+                <div className=" w-full text-white h-100vh">
+                    <div className="flex flex-col items-center px-4 mt-20 md:px-10">
+                        {/* NAV */}
+                        <div className="Nav glass mb-10 px-6 py-3 text-lg md:text-xl">
+                            <p className="font-bold">{mood}</p>
+                        </div>
 
-                                <div className='Nav glass px-10 py-5'>
-                                    <p className='font-bold'>{mood} </p>
-                                </div>
+                        {/* PREVIEW */}
+                        <div className="musicPreview w-48 h-48 md:w-72 md:h-72 lg:w-80 lg:h-80"></div>
 
-                                <div className='Nav px-5 py-3 glass'>
-                                    <p className='Menu'>TL</p>
-                                </div>
+                        {/* SONG INFO */}
+                        <div className="songInfo w-full max-w-md mt-10 text-center px-2">
+                            <p className="Title text-2xl md:text-4xl mb-3 font-bold">Lasers</p>
+                            <p className="Name text-sm md:text-base font-light">Pnd & Drake</p>
+                            <p className="Album text-xs md:text-sm font-extralight mt-1 mb-5">Album</p>
+                        </div>
 
+                        {/* SCRUBBER */}
+                        <div className="w-full w-screen mt-10 px-20">
+                            <div className="flex justify-between text-sm md:text-base mb-1">
+                                <p>00:00</p>
+                                <p>03:45</p>
                             </div>
+                            <div className="glass h-2 w-full"></div>
+                        </div>
 
-                            <div className='musicPreview w-80 h-80'></div>
-
-                            <div className='flex flex-col items-center songInfo  w-120 mt-20 h-auto'>
-                                <p className='Title text-4xl mb-5 mt-2  font-bold'>Lasers</p>
-                                <p className='Name  font-light'>Pnd & Drake</p>
-                                <p className='Album font-extralight mt-1 mb-5'>Album</p>
-                            </div>
-
-                            <div className='tracklist flex flex-row  justify-between gap-x-30'>
-                                {/* */}
-                                <div className='musicscrubber songInfo w-150 mt-15 h-4 '>
-                                    <div className='mt-5 flex flex-row justify-between gap-x-30 mb-1'>
-                                        <p className='startTime'>00:00</p>
-                                        <p className='endTime'>03:45</p>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div className='musicControlBar w-auto h-auto  mt-20 '>
-                                <div
-                                    className='controlBar flex items-center flex-row justify-between gap-x-5 mt-5 px-5 mb-5'>
-                                    <div className='Prev w-15 glass scale-85 h-15'>
-                                    </div>
-                                    <div className='Pause w-20 glass h-20'></div>
-                                    <div className='Next w-15 scale-85 glass h-15'>
-                                    </div>
-                                </div>
+                        {/* CONTROLS */}
+                        <div className="musicControlBar w-full max-w-md mt-12 px-4">
+                            <div className="flex justify-center items-center gap-6 md:gap-10">
+                                <div className="Prev glass  flex justify-center items-center  w-10 h-10 md:w-14 md:h-14">
+                                    <p className="flex justify-center items-center">
+                                        P
+                                        </p>
+                                        </div>
+                                <div className="Pause glass w-14 flex justify-center items-center h-14 md:w-20 md:h-20">
+                                    <p>
+                                        ||
+                                        </p>
+                                        </div>
+                                <div className="Next glass  flex justify-center items-center w-10 h-10 md:w-14 md:h-14">
+                                    <p>
+                                        N
+                                        </p>
+                                         </div>
                             </div>
                         </div>
                     </div>
+
                 </div>
             </div>
         </>

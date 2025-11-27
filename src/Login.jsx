@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import './App.css'
 import Header from "./components/Header.jsx";
-import MainOrb from './components/mainOrb.jsx';
+import HomePage from './components/HomePage';
 import RandomLyric from "./components/RandomLyric.jsx";
 import MoodSelector from "./components/MoodSelector.jsx";
 import Galaxy from "./components/Galaxy.jsx";
@@ -27,7 +27,7 @@ function Login() {
     <><div className="relative w-screen min-h-screen overflow-x-hidden flex justify-center items-center">
                 <Galaxy
 
-                    mouseRepulsion={false}
+                    mouseRepulsion={true}
                     mouseInteraction={false}
                     density={2.5}
                     glowIntensity={0.5}

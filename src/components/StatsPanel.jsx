@@ -1,6 +1,6 @@
 export function StatsPanel() {
     return (
-        <div className="w-full text-white space-y-6 px-4">
+        <div className="w-full text-white space-y-3 px-4">
 
             {/* HEADER */}
             <section className="text-center space-y-0">
@@ -9,7 +9,7 @@ export function StatsPanel() {
             </section>
 
             {/* MOOD DISTRIBUTION*/}
-            <section className="space-y-2">
+            <section className="space-y-1">
                 <h3 className="text-sm font-semibold">Mood Distribution</h3>
 
                 <div className="space-y-2">
@@ -43,7 +43,7 @@ export function StatsPanel() {
             <section>
                 <div className=" flex flex-col grid-cols-2 gap-3">
 
-                    <div className="p-2 rounded-lg mt-   bg-white/10 border border-white/20">
+                    <div className="p-2 rounded-lg bg-white/10  ">
                         <h4 className="text-lg font-bold">R&B</h4>
                         <p className="text-[10px] text-white/60">Top Genre</p>
                     </div>
