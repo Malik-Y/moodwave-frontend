@@ -1,17 +1,30 @@
 import MoodSelector from "./MoodSelector.jsx";
 import TopTracks from "./TopTracks";
 import StatsPanel from "./StatsPanel.jsx";
+import moodDescriptions from "./moodDescription.js";
 
 export default function Tabs({
     mood, moods, activeTab, collapsed,
     setMood, setActiveTab, setCollapsed, setFocusMode
-}) {
+})
+
+{
+    async function startSync() {
+  const token = localStorage.getItem("authToken");
+
+  await fetch("http://127.0.0.1:8000/api/mood-sync/", {
+    method: "POST",
+    headers: { "Authorization": `Token ${token}` },
+  });
+
+}
+
     return (
         <div className="flex flex-col items-center mt-8">
 
             {/* EXPANDED MODE */}
             {!collapsed && (
-                <div className="glass py-5 w-full max-w-xl overflow-hidden">
+                <div className="glass py-5 w-full w-auto overflow-hidden">
 
                     {/* TAB BAR */}
                     <div className="flex justify-center mb-4 text-white/70">
@@ -39,18 +52,21 @@ export default function Tabs({
                     {/* TAB CONTENT */}
                     {activeTab === "jumpin" && (
                         <MoodSelector
-                            moods={moods}
-                            setMood={setMood}
-                            setCollapsed={setCollapsed}
-                            setFocusMode={setFocusMode}
-                        />
+                                mood={mood}
+                                moods={moods}
+                                setMood={setMood}
+                                moodDescriptions={moodDescriptions}
+                                setCollapsed={setCollapsed}
+                                setFocusMode={setFocusMode}
+                            />
+
                     )}
 
                     {activeTab === "tracks" && <TopTracks/>}
 
                     {activeTab === "stats" && (
-                        <div className="flex justify-center">
-                            <StatsPanel/>
+                        <div className="flex overflow-hidden justify-center">
+                            <StatsPanel onAnalyzeMoreSongs={startSync} />
                         </div>
                     )}
                 </div>
@@ -58,7 +74,7 @@ export default function Tabs({
 
             {/* COLLAPSED MODE */}
             {collapsed && (
-                <div className="glass px-6 py-3 rounded-full flex gap-6 text-white/70 text-sm">
+                <div className="glass px-6 py-3 rounded-full flex gap-6 text-white/70 text-sm z-50">
                     <button onClick={() => openTab("tracks")}>Top Tracks</button>
                     <button onClick={() => openTab("jumpin")}>Mood</button>
                     <button onClick={() => openTab("stats")}>Stats</button>

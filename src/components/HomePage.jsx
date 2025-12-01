@@ -1,23 +1,33 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import MoodOrbSection from "./MoodOrbSection.jsx";
 import Tabs from "./Tabs.jsx";
+import moodDescriptions from "./moodDescription.js";
 
-const moods = ["Energized", "Calm", "Joyful", "Focused"];
-
-const moodDescriptions = {
-    Energized: "PUMPED UP & READY",
-    Calm: "PEACEFUL & SERENE",
-    Joyful: "BRIGHT • HAPPY VIBES",
-    Focused: "LOCKED IN & ZONED",
-};
 
 function HomePage() {
     const navigate = useNavigate();
-    const [mood, setMood] = useState("Energized");
+    const [moods, setMoods] = useState([]);
+    const [mood, setMood] = useState("Ambient");
     const [activeTab, setActiveTab] = useState("jumpin");
     const [collapsed, setCollapsed] = useState(true);
     const [focusMode, setFocusMode] = useState(true);
+
+    useEffect(() => {
+        async function fetchMoods() {
+            const token = localStorage.getItem("authToken");
+            const resp = await fetch("http://127.0.0.1:8000/api/user-info/", {
+                headers: { "Authorization": `Token ${token}` }
+            });
+
+            const data = await resp.json();
+            setMoods(data.moods);
+
+
+        }
+
+        fetchMoods();
+    }, []);
 
     function handleOrbClick() {
         navigate("/Musicplayer", {state: {mood}});
@@ -37,6 +47,7 @@ function HomePage() {
                 moods={moods}
                 activeTab={activeTab}
                 collapsed={collapsed}
+                description={moodDescriptions[mood]}
                 setMood={setMood}
                 setActiveTab={setActiveTab}
                 setCollapsed={setCollapsed}

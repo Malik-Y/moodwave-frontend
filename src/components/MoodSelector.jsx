@@ -9,18 +9,18 @@ export default function MoodSelector({moods, setMood, setCollapsed, setFocusMode
             </p>
 
             <div className="flex flex-wrap justify-center gap-6 mt-10">
-                {moods.map((m) => (
-                    <button
-                        key={m}
-                        className="rounded-full px-6 py-3 text-md font-medium text-white shadow-md hover:scale-105 transition-all"
-                        onClick={() => {
-                            setMood(m);
-                            setCollapsed(true);
-                            setFocusMode(true);
-                        }}
-                    >
-                        {m}
-                    </button>
+                 {moods.map((m) => (
+                <button
+                    key={m}
+                    className="text-white/80 hover:text-pink-300"
+                    onClick={() => {
+                        setMood(m);
+                        setCollapsed(true);
+                        setFocusMode(true);
+                    }}
+                >
+                    {m}
+                </button>
                 ))}
             </div>
         </>

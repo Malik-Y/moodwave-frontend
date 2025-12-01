@@ -1,15 +1,29 @@
-import { useState } from 'react'
-import './App.css'
+import {useEffect, useState} from 'react';
+import './App.css';
 import Header from "./components/Header.jsx";
 import HomePage from './components/HomePage.jsx';
-import RandomLyric from "./components/RandomLyric.jsx";
 import Galaxy from "./components/Galaxy.jsx";
+import LoadingScreen from "./components/LoadingScreen.jsx";
 
 function App() {
-  return (
-    <div className=" w-screen h-screen">
+  const [showLoading, setShowLoading] = useState(false);
 
-      {/* Background Galaxy */}
+  useEffect(() => {
+        const first = localStorage.getItem("firstLoginComplete");
+        if (!first) setShowLoading(true);
+    }, []);
+
+
+  function finishLoading() {
+    localStorage.setItem("firstLoginComplete", "true");
+    setShowLoading(false);
+  }
+
+
+  if (showLoading) return <LoadingScreen onFinished={finishLoading} />;
+
+  return (
+    <div className="w-screen h-screen">
       <Galaxy
         mouseRepulsion={false}
         mouseInteraction={false}
@@ -19,15 +33,12 @@ function App() {
         hueShift={181}
       />
 
-      {/* Foreground Content */}
       <div className="relative w-screen">
         <Header />
         <HomePage />
       </div>
-
     </div>
   );
 }
 
-
-export default App
+export default App;

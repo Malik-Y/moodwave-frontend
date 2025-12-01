@@ -3,37 +3,97 @@ import { motion } from "motion/react";
 import { Sparkles } from "lucide-react";
 
 const moodConfig = {
-  Energized: {
-    gradient: "from-orange-400 via-pink-400 to-rose-400",
-    glow: "shadow-[0_0_80px_rgba(251,146,60,0.6)]",
-    subtitle: "PUMPED & READY",
-    lightColor: "bg-orange-300",
+  "Romantic": {
+    gradient: "from-rose-300 via-pink-300 to-purple-300",
+    glow: "shadow-[0_0_80px_rgba(244,114,182,0.5)]",
+    subtitle: "SOFT • EMOTIVE",
+    lightColor: "bg-rose-300",
   },
-  Calm: {
-    gradient: "from-blue-300 via-cyan-300 to-teal-300",
-    glow: "shadow-[0_0_80px_rgba(103,232,249,0.5)]",
-    subtitle: "PEACEFUL & SERENE",
-    lightColor: "bg-cyan-300",
-  },
-  Joyful: {
-    gradient: "from-yellow-300 via-pink-300 to-purple-300",
-    glow: "shadow-[0_0_80px_rgba(253,224,71,0.5)]",
-    subtitle: "HAPPY & BRIGHT",
+
+  "Euphoric": {
+    gradient: "from-yellow-300 via-orange-400 to-pink-400",
+    glow: "shadow-[0_0_90px_rgba(251,146,60,0.7)]",
+    subtitle: "HIGH ENERGY • CELEBRATORY",
     lightColor: "bg-yellow-300",
   },
-  Focused: {
-    gradient: "from-indigo-400 via-purple-400 to-pink-400",
-    glow: "shadow-[0_0_80px_rgba(167,139,250,0.5)]",
-    subtitle: "LOCKED IN",
-    lightColor: "bg-purple-300",
+
+  "Warm": {
+    gradient: "from-amber-200 via-pink-200 to-rose-300",
+    glow: "shadow-[0_0_70px_rgba(253,186,116,0.5)]",
+    subtitle: "GLOWY • DREAMLIKE",
+    lightColor: "bg-amber-200",
+  },
+
+  "Hype": {
+    gradient: "from-red-400 via-orange-400 to-yellow-400",
+    glow: "shadow-[0_0_90px_rgba(251,113,133,0.6)]",
+    subtitle: "PUSHING FORWARD",
+    lightColor: "bg-red-300",
+  },
+
+  "Dark": {
+    gradient: "from-purple-900 via-red-900 to-black",
+    glow: "shadow-[0_0_120px_rgba(139,0,0,0.6)]",
+    subtitle: "HEAVY • PONDERING",
+    lightColor: "bg-red-900",
+  },
+
+  "Sad": {
+    gradient: "from-blue-500 via-indigo-400 to-purple-400",
+    glow: "shadow-[0_0_80px_rgba(96,165,250,0.6)]",
+    subtitle: "SOFT • SOMBER",
+    lightColor: "bg-blue-300",
+  },
+
+  "Melancholy": {
+    gradient: "from-slate-600 via-slate-500 to-blue-500",
+    glow: "shadow-[0_0_80px_rgba(71,85,105,0.6)]",
+    subtitle: "FADED • REFLECTIVE",
+    lightColor: "bg-slate-400",
+  },
+
+  "Calm": {
+    gradient: "from-teal-300 via-cyan-300 to-blue-300",
+    glow: "shadow-[0_0_80px_rgba(103,232,249,0.5)]",
+    subtitle: "QUIET • GENTLE",
+    lightColor: "bg-cyan-300",
+  },
+
+  "Moody": {
+    gradient: "from-indigo-500 via-purple-500 to-blue-500",
+    glow: "shadow-[0_0_90px_rgba(129,140,248,0.6)]",
+    subtitle: "DEEP • THOUGHTFUL",
+    lightColor: "bg-indigo-400",
+  },
+
+  "Ambient": {
+    gradient: "from-slate-200 via-slate-300 to-slate-400",
+    glow: "shadow-[0_0_60px_rgba(148,163,184,0.0)]",
+    subtitle: "FLOATING • ABSTRACT",
+    lightColor: "bg-slate-300",
+  },
+
+  "Neutral": {
+    gradient: "from-gray-300 via-gray-200 to-gray-100",
+    glow: "shadow-[0_0_40px_rgba(200,200,200,0.4)]",
+    subtitle: "UNCLASSIFIED",
+    lightColor: "bg-gray-200",
+  },
+
+  "Loading": {
+    gradient: "from-yellow-200 via-white to-blue-200",
+    glow: "shadow-[0_0_60px_rgba(200,200,255,0.3)]",
+    subtitle: "GATHERING VIBES...",
+    lightColor: "bg-blue-200",
   },
 };
 
 export default function MoodOrb({ mood, focus = false, onClick }) {
-  const config = moodConfig[mood];
+
+  const config = moodConfig[mood] || moodConfig["Neutral"];
 
   return (
-    <div className="relative flex items-center justify-center">
+    <div className="relative flex items-center mb-5 justify-center">
 
       {/* ⭐ OUTER GLOW RINGS */}
       <motion.div
@@ -106,7 +166,7 @@ export default function MoodOrb({ mood, focus = false, onClick }) {
         whileTap={{ scale: 0.95 }}
         animate={{
           scale: focus ? 1.05 : 0.8,
-          filter: focus ? "brightness(1.3)" : "brightness(1)",
+          filter: focus ? "brightness(1.1)" : "brightness(1)",
         }}
         transition={{ duration: 0.35 }}
         className="relative flex items-center  justify-center cursor-pointer group"
@@ -180,7 +240,7 @@ export default function MoodOrb({ mood, focus = false, onClick }) {
               <Sparkles className="w-8 h-8 text-white mx-auto" />
             </motion.div>
 
-            <h2 className="text-5xl mb-1 text-white drop-shadow-lg italic">
+            <h2 className="text-5xl mb-3 text-white drop-shadow-lg italic">
               {mood}
             </h2>
 
