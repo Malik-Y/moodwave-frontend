@@ -1,188 +1,287 @@
-import { useEffect, useRef, useState } from 'react';
+import {useEffect, useRef, useState} from "react";
+import {useLocation, useNavigate} from "react-router-dom";
 import Galaxy from "./components/Galaxy.jsx";
-import { useLocation } from "react-router-dom";
+
+import HeaderBar from "./components/music/HeaderBar.jsx";
+import AlbumArt from "./components/music/AlbumArt.jsx";
+import SongInfo from "./components/music/SongInfo.jsx";
+import MusicControls from "./components/music/MusicControls.jsx";
+import QueueDrawer from "./components/music/QueueDrawer.jsx";
+import NamePlaylist from "./components/music/NamingPlaylist.jsx";
 
 function Musicplayer() {
-  const location = useLocation();
-  const mood = location.state?.mood || "Energized";
+    const location = useLocation();
+    const navigate = useNavigate();
 
-  // Playlist will come from your backend
-  const [playlist, setPlaylist] = useState([]);
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [isPlaying, setIsPlaying] = useState(false);
+    const playlistId = location.state?.playlistId ?? null;
+    const playlistName = location.state?.playlistName ?? null;
+    const mood = playlistId ? null : location.state?.mood || "Energized";
 
-  // SoundCloud widget references
-  const iframeRef = useRef(null);
-  const widgetRef = useRef(null);
+    const [immersiveMode, setImmersiveMode] = useState(false);
+    const [playlist, setPlaylist] = useState([]);
+    const [currentIndex, setCurrentIndex] = useState(0);
+    const [isPlaying, setIsPlaying] = useState(false);
+    const [reloading, setReloading] = useState(false);
+    const [playlistOpen, setPlaylistOpen] = useState(false);
+    const [playerReady, setPlayerReady] = useState(false);
+    const [namingPlaylist, setNamingPlaylist] = useState(false);
+    const [newPlaylistName, setNewPlaylistName] = useState("");
 
-  // 1️⃣ Initialize SoundCloud player when iframe mounts
-  useEffect(() => {
-    if (iframeRef.current && window.SC && !widgetRef.current) {
-      widgetRef.current = window.SC.Widget(iframeRef.current);
+    const iframeRef = useRef(null);
+    const widgetRef = useRef(null);
 
-      widgetRef.current.bind(window.SC.Widget.Events.READY, () => {
-        widgetRef.current.pause();
-        setIsPlaying(false);
-      });
-    }
-  }, []);
 
-  // 2️⃣ Fetch recommended tracks from backend after mood is passed
-  useEffect(() => {
-    async function fetchSongs() {
-      try {
+    /* 🎯 nextSong logic */
+    const nextSong = () => {
+        if (!playlist.length) return;
+        setCurrentIndex((i) => (i + 1) % playlist.length);
+    };
+
+    const nextSongRef = useRef(nextSong);
+    useEffect(() => {
+        nextSongRef.current = nextSong;
+    });
+
+    /* Initialize Soundcloud */
+    useEffect(() => {
+        if (iframeRef.current && window.SC && !widgetRef.current) {
+            widgetRef.current = window.SC.Widget(iframeRef.current);
+
+            widgetRef.current.bind(window.SC.Widget.Events.READY, () => {
+                widgetRef.current.pause();
+                setIsPlaying(false);
+
+                widgetRef.current.bind(window.SC.Widget.Events.FINISH, () => {
+                    console.log("⚡ FINISH fired — calling nextSong()");
+                    nextSongRef.current();
+                });
+            });
+        }
+    }, []);
+
+    /* Fetch playlist */
+    useEffect(() => {
+        async function loadMusic() {
+            const token = localStorage.getItem("authToken");
+
+            if (playlistId) {
+                const resp = await fetch(
+                    `http://127.0.0.1:8000/api/get-playlist/?id=${playlistId}`,
+                    {headers: {Authorization: `Token ${token}`}}
+                );
+                const data = await resp.json();
+                setPlaylist(data.tracks || []);
+                setCurrentIndex(0);
+                return;
+            }
+
+            const resp = await fetch(
+                `http://127.0.0.1:8000/api/recommendations/?mood=${mood}`,
+                {headers: {Authorization: `Token ${token}`}}
+            );
+            const data = await resp.json();
+            setPlaylist(data.songs || []);
+            setCurrentIndex(0);
+        }
+
+        loadMusic();
+    }, [playlistId, mood]);
+
+    /* Handle current song changing */
+    useEffect(() => {
+        if (!widgetRef.current || !playlist.length) return;
+
+        const track = playlist[currentIndex];
+        if (!track?.soundcloud_url) return;
+
+        console.log("Loading:", track.soundcloud_url);
+
+        widgetRef.current.load(track.soundcloud_url, {
+            auto_play: false,
+            show_comments: false,
+        });
+
+        widgetRef.current.bind(window.SC.Widget.Events.READY, () => {
+            widgetRef.current.play();
+            setIsPlaying(true);
+            setPlayerReady(true);
+        });
+    }, [currentIndex, playlist]);
+
+    /* Reload recommendations */
+    async function reloadRecommendations() {
+        if (playlistId) return;
+
+        setReloading(true);
+
         const token = localStorage.getItem("authToken");
 
         const resp = await fetch(
             `http://127.0.0.1:8000/api/recommendations/?mood=${mood}`,
-            {
-              headers: {
-                "Authorization": `Token ${token}`
-              }
-            }
+            {headers: {Authorization: `Token ${token}`}}
         );
-
         const data = await resp.json();
 
-        if (data.songs && data.songs.length > 0) {
-          setPlaylist(data.songs);
-          setCurrentIndex(0);
+        setPlaylist(data.songs || []);
+        setCurrentIndex(0);
+
+        if (widgetRef.current && data.songs?.length > 0) {
+            widgetRef.current.load(data.songs[0].soundcloud_url, {
+                auto_play: true,
+                show_comments: false,
+            });
+            setIsPlaying(true);
+            setReloading(false);
         }
-      } catch (err) {
-        console.error("Failed to fetch songs:", err);
-      }
     }
 
-    fetchSongs();
-  }, [mood]);
+    /* Manual controls */
+    const handlePlayPause = () => {
+        if (!widgetRef.current) return;
 
-  // 3️⃣ Load the current song into SoundCloud widget automatically
-  useEffect(() => {
-    if (!widgetRef.current) return;
-    if (playlist.length === 0) return;
+        if (isPlaying) {
+            widgetRef.current.pause();
+            setIsPlaying(false);
+        } else {
+            widgetRef.current.play();
+            setIsPlaying(true);
+        }
+    };
+
+    const prevSong = () => {
+        if (!playlist.length) return;
+        setCurrentIndex((i) => (i - 1 + playlist.length) % playlist.length);
+    };
 
     const current = playlist[currentIndex];
-    if (!current?.soundcloud_url) return;
 
-    widgetRef.current.load(current.soundcloud_url, {
-      auto_play: true,
-      show_comments: false,
-    });
+    /* Save playlist */
+    async function handleSavePlaylist(name) {
+        const token = localStorage.getItem("authToken");
 
-    widgetRef.current.bind(window.SC.Widget.Events.READY, () => {
-    widgetRef.current.play();
-    setIsPlaying(true);
-  });
+        const resp = await fetch("http://127.0.0.1:8000/api/save-playlist/", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Token ${token}`,
+            },
+            body: JSON.stringify({
+                name: name,
+                tracks: playlist,
+            }),
+        });
 
-    setIsPlaying(true);
-  }, [currentIndex, playlist]);
-
-  // Controls
-  function handlePlayPause() {
-    if (!widgetRef.current) return;
-
-    if (isPlaying) {
-      widgetRef.current.pause();
-      setIsPlaying(false);
-    } else {
-      widgetRef.current.play();
-      setIsPlaying(true);
+        const data = await resp.json();
+        alert(
+            data.status === "success"
+                ? `Playlist saved as: ${data.playlist_name}`
+                : "Failed to save playlist."
+        );
     }
-  }
 
-  function nextSong() {
-    if (!playlist.length) return;
-    setCurrentIndex((i) => (i + 1) % playlist.length);
+    return (
+        <div className="relative w-screen h-screen overflow-hidden">
+            <Galaxy
+                mouseRepulsion={false}
+                mouseInteraction={false}
+                density={2.5}
+                glowIntensity={0.5}
+                saturation={0.8}
+                hueShift={101}
+            />
 
-  }
+            {/* SoundCloud player */}
+            <iframe
+                ref={iframeRef}
+                style={{display: "none"}}
+                allow="autoplay; encrypted-media;"
+                src="https://w.soundcloud.com/player/?url=https://soundcloud.com/partyomo/lasers"
+            />
 
-  function prevSong() {
-    if (!playlist.length) return;
-    setCurrentIndex((i) => (i - 1 + playlist.length) % playlist.length);
-
-  }
-
-  const current = playlist[currentIndex];
-
-  return (
-    <div className="relative w-screen h-screen overflow-hidden">
-      {/* Galaxy background */}
-      <Galaxy mouseRepulsion={false} mouseInteraction={false} />
-
-      {/* Hidden SoundCloud iframe */}
-      <iframe
-        ref={iframeRef}
-        title="soundcloud-player"
-        style={{ display: "none" }}
-        scrolling="no"
-        frameBorder="no"
-        allow="autoplay"
-        src="https://w.soundcloud.com/player/?url=https://soundcloud.com/partyomo/lasers"
-      />
-
-      <div className="w-full text-white">
-        <div className="flex flex-col items-center px-4 mt-20">
-
-          {/* Mood Display */}
-          <div className="Nav glass mb-10 px-6 py-3 text-lg md:text-xl">
-            <p className="font-bold">{mood}</p>
-          </div>
-
-          {/* Album Art */}
-          <div className="musicPreview w-48 h-48 md:w-72 md:h-72 rounded-2xl overflow-hidden">
-              <img
-                src={current?.album_image}
-                className="w-full h-full object-contain"
-                alt="Album Art"
-              />
+            {!playerReady && (
+                <div
+                    className="w-screen h-screen flex items-center justify-center text-white absolute inset-0 z-50 bg-black/40 backdrop-blur-md">
+                    <p className="text-white/70 text-xl animate-pulse">Loading Player...</p>
                 </div>
+            )}
+            {reloading && (
+                <div
+                    className="w-screen h-screen flex items-center justify-center text-white absolute inset-0 z-50 bg-black/40 backdrop-blur-md">
+                    <p className="text-white/70 text-xl animate-pulse">
+                        Refreshing Recommendations…
+                    </p>
+                </div>
+            )}
 
+            <div className="w-full text-white">
+                <div className="flex flex-col items-center px-4 mt-20">
+                    {/* Header & back button */}
+                    <HeaderBar
+                        playlistId={playlistId}
+                        playlistName={playlistName}
+                        mood={mood}
+                        immersiveMode={immersiveMode}
+                        onBack={() => navigate("/")}
+                    />
 
-          {/* Song Info */}
-          <div className="songInfo w-full max-w-md mt-10 text-center px-2">
-            <p className="Title text-2xl md:text-4xl mb-3 font-bold">
-              {current?.title || "Loading..."}
-            </p>
-            <p className="Name text-sm md:text-base font-light">
-              {current?.artists || ""}
-            </p>
-            <p className="Album text-xs md:text-sm font-extralight mt-1 mb-5">
-              {current?.album || ""}
-            </p>
-          </div>
+                    {/* Album Art */}
+                    <AlbumArt
+                        current={current}
+                        immersiveMode={immersiveMode}
+                        setImmersiveMode={setImmersiveMode}
+                    />
 
-          {/* Controls */}
-          <div className="musicControlBar w-full max-w-md mt-12 px-4">
-            <div className="flex justify-center items-center gap-6 md:gap-10">
+                    {immersiveMode && (
+                        <button
+                            onClick={() => setImmersiveMode(false)}
+                            className="mt-6 px-6 py-2 glass rounded-full text-sm text-white opacity-55 hover:bg-white/10 transition"
+                        >
+                            ✕ Exit Immersive Mode
+                        </button>
+                    )}
 
-              <button
-                onClick={prevSong}
-                className="Prev glass flex justify-center items-center w-10 h-10 md:w-14 md:h-14"
-              >
-                <p>P</p>
-              </button>
+                    {/* Song Info */}
+                    <SongInfo
+                        current={current}
+                        immersiveMode={immersiveMode}
+                        playlistOpen={playlistOpen}
+                        setPlaylistOpen={setPlaylistOpen}
+                    />
 
-              <button
-                onClick={handlePlayPause}
-                className="Pause glass w-14 flex justify-center items-center h-14 md:w-20 md:h-20"
-              >
-                {isPlaying ? "||" : "▶"}
-              </button>
+                    {/* Controls */}
+                    <MusicControls
+                        immersiveMode={immersiveMode}
+                        isPlaying={isPlaying}
+                        togglePlayPause={handlePlayPause}
+                        prevSong={prevSong}
+                        nextSong={nextSong}
+                        reloadRecommendations={reloadRecommendations}
+                        playlistId={playlistId}
+                    />
 
-              <button
-                onClick={nextSong}
-                className="Next glass flex justify-center items-center w-10 h-10 md:w-14 md:h-14"
-              >
-                <p>N</p>
-              </button>
+                    {/* Queue Drawer */}
+                    <QueueDrawer
+                        playlistOpen={playlistOpen}
+                        playlist={playlist}
+                        currentIndex={currentIndex}
+                        setCurrentIndex={setCurrentIndex}
+                        setNamingPlaylist={setNamingPlaylist}
+                    />
 
+                    {/* Name Playlist Popup */}
+                    <NamePlaylist
+                        open={namingPlaylist}
+                        newPlaylistName={newPlaylistName}
+                        setNewPlaylistName={setNewPlaylistName}
+                        setNamingPlaylist={setNamingPlaylist}
+                        handleSavePlaylist={handleSavePlaylist}
+                        playlistName={playlistName}
+                        mood={mood}
+                    />
+                </div>
             </div>
-          </div>
-
         </div>
-      </div>
-    </div>
-  );
+    );
 }
 
 export default Musicplayer;

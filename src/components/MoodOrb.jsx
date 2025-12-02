@@ -81,8 +81,8 @@ const moodConfig = {
   },
 
   "Loading": {
-    gradient: "from-yellow-200 via-white to-blue-200",
-    glow: "shadow-[0_0_60px_rgba(200,200,255,0.3)]",
+    gradient: "from-yellow-200 via-blue to-blue-200",
+    glow: "shadow-[0_0_10px_rgba(200,200,255,0.1)]",
     subtitle: "GATHERING VIBES...",
     lightColor: "bg-blue-200",
   },
@@ -249,13 +249,15 @@ export default function MoodOrb({ mood, focus = false, onClick }) {
             </p>
 
 
-              <motion.p
-                animate={{ opacity: [0.5, 1, 0.5] }}
-                transition={{ duration: 2, repeat: Infinity }}
-                className="text-xs text-white/80 tracking-widest mt-4 drop-shadow-md"
-              >
-                ✨ TAP TO PLAY ✨
-              </motion.p>
+              {mood !== "Loading" && (
+                  <motion.p
+                    animate={{ opacity: [0.5, 1, 0.5] }}
+                    transition={{ duration: 2, repeat: Infinity }}
+                    className="text-xs text-white/80 tracking-widest mt-4 drop-shadow-md"
+                  >
+                    ✨ TAP TO PLAY ✨
+                  </motion.p>
+                )}
           </motion.div>
         </div>
 

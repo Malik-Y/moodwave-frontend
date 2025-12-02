@@ -1,5 +1,6 @@
 import {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
+import { User } from "lucide-react";
 import MoodOrbSection from "./MoodOrbSection.jsx";
 import Tabs from "./Tabs.jsx";
 import moodDescriptions from "./moodDescription.js";
@@ -21,8 +22,7 @@ function HomePage() {
             });
 
             const data = await resp.json();
-            setMoods(data.moods);
-
+            setMoods([...new Set(data.moods)]);
 
         }
 
@@ -34,7 +34,14 @@ function HomePage() {
     }
 
     return (
-        <div className="w-full max-w-screen-lg mx-auto px-4 sm:px-6 md:px-10 lg:px-16">
+        <div className={`{w-full max-w-screen-lg mx-auto px-4 sm:px-6 md:px-10 lg:px-16 ${focusMode ? "max-w-xl mt-30" : "max-w-screen-lg mt-10"}`} >
+            <button
+                onClick={() => navigate("/profile")}
+                className="absolute top-4 right-4 glass rounded-full p-2 hover:bg-white/10 transition"
+            >
+                <User className="w-6 h-6 text-white" />
+            </button>
+
             <MoodOrbSection
                 mood={mood}
                 description={moodDescriptions[mood]}

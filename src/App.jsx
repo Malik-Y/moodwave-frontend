@@ -25,8 +25,8 @@ function App() {
   return (
     <div className="w-screen h-screen">
       <Galaxy
-        mouseRepulsion={false}
-        mouseInteraction={false}
+        mouseRepulsion={true}
+        mouseInteraction={true}
         density={1.5}
         glowIntensity={0.5}
         saturation={0.8}

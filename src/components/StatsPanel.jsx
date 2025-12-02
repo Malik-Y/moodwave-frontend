@@ -21,6 +21,7 @@ export default function StatsPanel({ onAnalyzeMoreSongs }) {
 
         const resp = await fetch("http://127.0.0.1:8000/api/user-stats/", {
           headers: { Authorization: `Token ${token}` },
+
         });
 
         const data = await resp.json();
@@ -35,7 +36,7 @@ export default function StatsPanel({ onAnalyzeMoreSongs }) {
   }, []);
 
   if (loading) {
-    return <p className="text-white/70 text-center">Loading your stats...</p>;
+    return <p className="text-white/70 text-center">Loading...</p>;
   }
 
   if (!stats || stats.total_tracks === 0) {
@@ -74,16 +75,16 @@ export default function StatsPanel({ onAnalyzeMoreSongs }) {
       </div>
 
       {/* MAIN GRID */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 h-[300px]">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6 h-auto">
 
         {/* MOOD DONUT */}
         <div className="bg-purple-950/30 rounded-3xl p-4 backdrop-blur-sm border border-purple-500/20">
           <h2 className="text-white text-center mb-6">Mood Breakdown</h2>
 
-          <div className="flex items-center justify-center gap-4">
+          <div className="flex items-center justify-center mt-15 gap-4">
 
             {/* PIE CHART */}
-            <div className="w-[55%]">
+            <div className="w-[50%]">
               <ResponsiveContainer width="100%" height={120}>
                 <PieChart>
                   <Pie
@@ -92,7 +93,7 @@ export default function StatsPanel({ onAnalyzeMoreSongs }) {
                     cy="50%"
                     innerRadius={20}
                     outerRadius={50}
-                    paddingAngle={4}
+                    paddingAngle={1}
                     dataKey="value"
                   >
                     {chartData.map((entry, index) => (

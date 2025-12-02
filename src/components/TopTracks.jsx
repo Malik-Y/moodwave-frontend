@@ -14,9 +14,9 @@ export default function TopTracks() {
     }, []);
 
     return (
-        <div className="flex w-auto gap-4 justify-center px-5">
+        <div className="flex w-full gap-4 px-5 overflow-x-auto scroll-smooth scrollbar-none py-5 snap-x snap-mandatory">
             {tracks.length === 0 && (
-                <p className="text-white/50 italic">Loading your mood tracks...</p>
+                <p className="text-white/50 italic">Loading your favourite tracks...</p>
             )}
 
             {tracks.map(track => (

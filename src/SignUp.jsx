@@ -28,11 +28,12 @@ function Signup() {
                 return;
             }
 
-            // 2. Extract token
             const data = await response.json();
             localStorage.setItem("authToken", data.token);
+            localStorage.removeItem("firstLoginComplete");
 
-            // 3. Ask backend: is Spotify connected?
+
+            //Check with backend if Spotify is connected
             const statusResp = await fetch("http://127.0.0.1:8000/api/user-info/", {
                 headers: {
                     "Authorization": `Token ${data.token}`
@@ -41,11 +42,10 @@ function Signup() {
 
             const statusData = await statusResp.json();
 
-            // 4. Redirect based on Spotify connection
             if (!statusData.spotify_connected) {
                 navigate("/connect-spotify");
             } else {
-                navigate("/");
+                navigate("/loading");
             }
 
         } catch (err) {

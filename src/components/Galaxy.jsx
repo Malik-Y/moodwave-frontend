@@ -1,5 +1,5 @@
 import { Renderer, Program, Mesh, Color, Triangle } from 'ogl';
-import { useEffect, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
 
 const vertexShader = `
 attribute vec2 uv;
@@ -169,10 +169,10 @@ void main() {
 }
 `;
 
-export default function Galaxy({
+function Galaxy({
   focal = [0.5, 0.5],
   rotation = [1.0, 0.0],
-  starSpeed = 0.5,
+  starSpeed = 0.1,
   density = 1,
   hueShift = 140,
   disableAnimation = false,
@@ -181,7 +181,7 @@ export default function Galaxy({
   glowIntensity = 0.3,
   saturation = 0.0,
   mouseRepulsion = true,
-  repulsionStrength = 2,
+  repulsionStrength = 0.5,
   twinkleIntensity = 0.3,
   rotationSpeed = 0.1,
   autoCenterRepulsion = 0,
@@ -330,3 +330,4 @@ export default function Galaxy({
 
   return <div ref={ctnDom} className="absolute inset-0 " {...rest} />;
 }
+export default React.memo(Galaxy);

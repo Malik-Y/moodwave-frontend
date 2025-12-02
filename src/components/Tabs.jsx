@@ -28,13 +28,13 @@ export default function Tabs({
 
                     {/* TAB BAR */}
                     <div className="flex justify-center mb-4 text-white/70">
-                        {["tracks", "jumpin", "stats"].map(tab => (
+                        {["tracks", "mood", "stats"].map(tab => (
                             <button
                                 key={tab}
                                 onClick={() => setActiveTab(tab)}
                                 className={activeTab === tab ? "text-pink-300 font-bold" : ""}
                             >
-                                {tab === "jumpin" ? "Mood" : tab === "tracks" ? "Top Tracks" : "Stats"}
+                                {tab === "mood" ? "Mood" : tab === "tracks" ? "Top Tracks" : "Stats"}
                             </button>
                         ))}
 
@@ -50,7 +50,7 @@ export default function Tabs({
                     </div>
 
                     {/* TAB CONTENT */}
-                    {activeTab === "jumpin" && (
+                    {activeTab === "mood" && (
                         <MoodSelector
                                 mood={mood}
                                 moods={moods}
@@ -76,7 +76,7 @@ export default function Tabs({
             {collapsed && (
                 <div className="glass px-6 py-3 rounded-full flex gap-6 text-white/70 text-sm z-50">
                     <button onClick={() => openTab("tracks")}>Top Tracks</button>
-                    <button onClick={() => openTab("jumpin")}>Mood</button>
+                    <button onClick={() => openTab("mood")}>Mood</button>
                     <button onClick={() => openTab("stats")}>Stats</button>
                 </div>
             )}

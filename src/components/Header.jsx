@@ -2,7 +2,7 @@ import profile from './assets/profile.png'
 
 function Header() {
     return (
-        <div className="w-full flex flex-col items-center justify-center px-4">
+        <div className="w-full  flex flex-col items-center overflow-x-hidden justify-center ">
 
             <h1 className="
                 text-center

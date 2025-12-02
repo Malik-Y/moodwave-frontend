@@ -1,4 +1,3 @@
-import {StrictMode, useState} from 'react'
 import { createRoot } from 'react-dom/client'
 import {createBrowserRouter, RouterProvider, Navigate} from 'react-router-dom'
 import ProtectedRoute from './components/ProtectedRoute.jsx';
@@ -9,6 +8,7 @@ import Musicplayer from "./Musicplayer.jsx";
 import Signup from "./SignUp.jsx";
 import SpotifyAuth from "./SpotifyAuth.jsx";
 import LoadingScreen from "./components/LoadingScreen.jsx";
+import Profile from "./Profile.jsx";
 
 
 
@@ -31,7 +31,7 @@ const router = createBrowserRouter([
     path: "/Musicplayer",
     element: (
       <ProtectedRoute>
-        <Musicplayer />
+        <Musicplayer element={<Musicplayer />}  />
       </ProtectedRoute>
     ),
   },
@@ -51,12 +51,18 @@ const router = createBrowserRouter([
       </ProtectedRoute>
     ),
   },
+    {
+    path: "/profile",
+    element: (
+      <ProtectedRoute>
+        <Profile />
+      </ProtectedRoute>
+    ),
+  },
 ]);
 
 createRoot(document.getElementById('root')).render(
-  <StrictMode>
     <RouterProvider router={router}/>
-  </StrictMode>
 )
 
 export default router;
