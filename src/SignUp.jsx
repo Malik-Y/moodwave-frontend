@@ -24,7 +24,7 @@ function Signup() {
             });
 
             if (!response.ok) {
-                setError("Invalid credentials");
+                setError("Pick a stronger password");
                 return;
             }
 

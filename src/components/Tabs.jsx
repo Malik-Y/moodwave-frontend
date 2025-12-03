@@ -1,23 +1,26 @@
 import MoodSelector from "./MoodSelector.jsx";
 import TopTracks from "./TopTracks";
 import StatsPanel from "./StatsPanel.jsx";
+import {useNavigate} from "react-router-dom";
 import moodDescriptions from "./moodDescription.js";
 
-export default function Tabs({
-    mood, moods, activeTab, collapsed,
-    setMood, setActiveTab, setCollapsed, setFocusMode
-})
-
+export default function Tabs({mood, moods, activeTab, collapsed, setMood, setActiveTab, setCollapsed, setFocusMode})
 {
+const navigate = useNavigate();
+
     async function startSync() {
-  const token = localStorage.getItem("authToken");
+        navigate("/loading")
 
-  await fetch("http://127.0.0.1:8000/api/mood-sync/", {
-    method: "POST",
-    headers: { "Authorization": `Token ${token}` },
-  });
+        const token = localStorage.getItem("authToken");
 
-}
+        await fetch("http://127.0.0.1:8000/api/mood-sync/", {
+            method: "POST",
+            headers: {"Authorization": `Token ${token}`},
+        });
+
+
+
+    }
 
     return (
         <div className="flex flex-col items-center mt-8">
@@ -52,13 +55,13 @@ export default function Tabs({
                     {/* TAB CONTENT */}
                     {activeTab === "mood" && (
                         <MoodSelector
-                                mood={mood}
-                                moods={moods}
-                                setMood={setMood}
-                                moodDescriptions={moodDescriptions}
-                                setCollapsed={setCollapsed}
-                                setFocusMode={setFocusMode}
-                            />
+                            mood={mood}
+                            moods={moods}
+                            setMood={setMood}
+                            moodDescriptions={moodDescriptions}
+                            setCollapsed={setCollapsed}
+                            setFocusMode={setFocusMode}
+                        />
 
                     )}
 
@@ -66,7 +69,7 @@ export default function Tabs({
 
                     {activeTab === "stats" && (
                         <div className="flex overflow-hidden justify-center">
-                            <StatsPanel onAnalyzeMoreSongs={startSync} />
+                            <StatsPanel onAnalyzeMoreSongs={startSync}/>
                         </div>
                     )}
                 </div>

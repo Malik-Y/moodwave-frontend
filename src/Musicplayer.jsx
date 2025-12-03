@@ -13,6 +13,9 @@ function Musicplayer() {
     const location = useLocation();
     const navigate = useNavigate();
 
+
+
+
     const playlistId = location.state?.playlistId ?? null;
     const playlistName = location.state?.playlistName ?? null;
     const mood = playlistId ? null : location.state?.mood || "Energized";
@@ -26,12 +29,13 @@ function Musicplayer() {
     const [playerReady, setPlayerReady] = useState(false);
     const [namingPlaylist, setNamingPlaylist] = useState(false);
     const [newPlaylistName, setNewPlaylistName] = useState("");
+    const [PlaylistDescription, setNewPlaylistDescription] = useState("");
 
     const iframeRef = useRef(null);
     const widgetRef = useRef(null);
 
 
-    /* 🎯 nextSong logic */
+    /* next song logic */
     const nextSong = () => {
         if (!playlist.length) return;
         setCurrentIndex((i) => (i + 1) % playlist.length);
@@ -156,7 +160,8 @@ function Musicplayer() {
     const current = playlist[currentIndex];
 
     /* Save playlist */
-    async function handleSavePlaylist(name) {
+    async function handleSavePlaylist(name, description) {
+
         const token = localStorage.getItem("authToken");
 
         const resp = await fetch("http://127.0.0.1:8000/api/save-playlist/", {
@@ -168,16 +173,19 @@ function Musicplayer() {
             body: JSON.stringify({
                 name: name,
                 tracks: playlist,
+                description: description,
             }),
         });
 
         const data = await resp.json();
         alert(
-            data.status === "success"
+            data.status === 200
                 ? `Playlist saved as: ${data.playlist_name}`
                 : "Failed to save playlist."
         );
     }
+
+
 
     return (
         <div className="relative w-screen h-screen overflow-hidden">
@@ -273,6 +281,8 @@ function Musicplayer() {
                         open={namingPlaylist}
                         newPlaylistName={newPlaylistName}
                         setNewPlaylistName={setNewPlaylistName}
+                        setNewPlaylistDescription={setNewPlaylistDescription}
+                        PlaylistDescription={PlaylistDescription}
                         setNamingPlaylist={setNamingPlaylist}
                         handleSavePlaylist={handleSavePlaylist}
                         playlistName={playlistName}

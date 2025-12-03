@@ -2,9 +2,12 @@ export default function NamingPlaylist({
   open,
   newPlaylistName,
   setNewPlaylistName,
+  setNewPlaylistDescription,
   setNamingPlaylist,
   handleSavePlaylist,
   playlistName,
+    PlaylistDescription,
+
   mood,
 }) {
   if (!open) return null;
@@ -21,6 +24,14 @@ export default function NamingPlaylist({
           onChange={(e) => setNewPlaylistName(e.target.value)}
           className="w-full px-3 py-2 rounded-lg bg-white/10 focus:outline-none text-white"
         />
+          <input
+          type="text"
+          placeholder={"Description"}
+          value={PlaylistDescription}
+          onChange={(e) => setNewPlaylistDescription(e.target.value)}
+          className="w-full px-3 py-2 rounded-lg bg-white/10 focus:outline-none text-white"
+        />
+
 
         <div className="flex justify-between mt-4">
           <button
@@ -35,7 +46,7 @@ export default function NamingPlaylist({
 
           <button
             onClick={() => {
-              handleSavePlaylist(newPlaylistName || playlistName || `${mood} Mix`);
+              handleSavePlaylist(newPlaylistName || playlistName || `${mood} Mix`, PlaylistDescription);
               setNamingPlaylist(false);
               setNewPlaylistName("");
             }}

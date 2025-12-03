@@ -20,7 +20,9 @@ export default function LoadingScreen() {
             });
 
             localStorage.setItem("firstLoginComplete", "true");
-            navigate("/", {replace: true});
+            navigate("/", { replace: true });
+            window.location.reload();
+
 
         }
         runSync();
