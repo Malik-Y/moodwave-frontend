@@ -13,7 +13,7 @@ const navigate = useNavigate();
 
         const token = localStorage.getItem("authToken");
 
-        await fetch("https://moodwave-backend.vercel.app/api/mood-sync/", {
+        await fetch("https://moodwave-6b5s.onrender.com/api/mood-sync/", {
             method: "POST",
             headers: {"Authorization": `Token ${token}`},
         });

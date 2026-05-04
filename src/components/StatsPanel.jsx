@@ -19,7 +19,7 @@ export default function StatsPanel({ onAnalyzeMoreSongs }) {
       try {
         const token = localStorage.getItem("authToken");
 
-        const resp = await fetch("https://moodwave-backend.vercel.app/api/user-stats/", {
+        const resp = await fetch("https://moodwave-6b5s.onrender.com/api/user-stats/", {
           headers: { Authorization: `Token ${token}` },
 
         });

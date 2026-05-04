@@ -13,7 +13,7 @@ function Signup() {
     async function handleSignup() {
         try {
             // 1. Login to Django
-            const response = await fetch("https://moodwave-backend.vercel.app/api/register/", {
+            const response = await fetch("https://moodwave-6b5s.onrender.com/api/register/", {
                 method: "POST",
                 headers: {"Content-Type": "application/json"},
                 body: JSON.stringify({
@@ -34,7 +34,7 @@ function Signup() {
 
 
             //Check with backend if Spotify is connected
-            const statusResp = await fetch("https://moodwave-backend.vercel.app/api/user-info/", {
+            const statusResp = await fetch("https://moodwave-6b5s.onrender.com/api/user-info/", {
                 headers: {
                     "Authorization": `Token ${data.token}`
                 }

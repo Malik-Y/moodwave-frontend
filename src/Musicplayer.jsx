@@ -164,7 +164,7 @@ function Musicplayer() {
 
         const token = localStorage.getItem("authToken");
 
-        const resp = await fetch("https://moodwave-backend.vercel.app/api/save-playlist/", {
+        const resp = await fetch("https://moodwave-6b5s.onrender.com/api/save-playlist/", {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",

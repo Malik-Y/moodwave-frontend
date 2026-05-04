@@ -20,7 +20,7 @@ function Login() {
   try {
     setError("");
 
-   const response = await fetch("https://moodwave-backend.vercel.app/login/token", {
+   const response = await fetch("https://moodwave-6b5s.onrender.com/login/token", {
   method: "POST",
   headers: { "Content-Type": "application/json" },
   body: JSON.stringify({
@@ -38,7 +38,7 @@ function Login() {
     localStorage.removeItem("firstLoginComplete");
 
     // Check if Spotify is connected
-    const statusResp = await fetch("https://moodwave-backend.vercel.app/api/user-info/", {
+    const statusResp = await fetch("https://moodwave-6b5s.onrender.com/api/user-info/", {
       headers: { "Authorization": `Token ${data.token}` },
     });
 
