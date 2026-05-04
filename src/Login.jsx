@@ -20,7 +20,7 @@ function Login() {
   try {
     setError("");
 
-   const response = await fetch("https://moodwave-6b5s.onrender.com/login/token", {
+   const response = await fetch("https://moodwave-6b5s.onrender.com/login/", {
   method: "POST",
   headers: {
     "Content-Type": "application/x-www-form-urlencoded",
@@ -120,7 +120,7 @@ function Login() {
 
                         <div className="flex items-center justify-center gap-2 ">
                             <p className="text-sm italic font-light">Don't have an account?</p>
-                            <a className="text-sm underline italic" href="/signup">Create one</a>
+                            <a className="text-sm underline italic" href="/register">Create one</a>
 
                         </div>
 
