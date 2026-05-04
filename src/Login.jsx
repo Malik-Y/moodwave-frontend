@@ -120,7 +120,7 @@ function Login() {
 
                         <div className="flex items-center justify-center gap-2 ">
                             <p className="text-sm italic font-light">Don't have an account?</p>
-                            <a className="text-sm underline italic" href="/register">Create one</a>
+                            <a className="text-sm underline italic" href="/signup">Create one</a>
 
                         </div>
 
