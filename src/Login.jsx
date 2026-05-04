@@ -20,15 +20,14 @@ function Login() {
   try {
     setError("");
 
-    const response = await fetch("http://127.0.0.1:8000/login/token", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        username: Username,
-        password: password,
-      }),
-    });
-
+   const response = await fetch("https://moodwave-backend.vercel.app/login/token", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({
+    username: Username,
+    password: password,
+  }),
+});
     if (!response.ok) {
       setError("Invalid username or password");
       return;
@@ -39,7 +38,7 @@ function Login() {
     localStorage.removeItem("firstLoginComplete");
 
     // Check if Spotify is connected
-    const statusResp = await fetch("http://127.0.0.1:8000/api/user-info/", {
+    const statusResp = await fetch("https://moodwave-backend.vercel.app/api/user-info/", {
       headers: { "Authorization": `Token ${data.token}` },
     });
 

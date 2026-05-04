@@ -6,7 +6,7 @@ export default function TopTracks() {
     const [tracks, setTracks] = useState([]);
 
     useEffect(() => {
-        apiGet("http://127.0.0.1:8000/api/top-tracks/")
+        apiGet("https://moodwave-backend.vercel.app/api/top-tracks/")
             .then(data => {
                 console.log("API data:", data);
                 setTracks(data.top_tracks || []);

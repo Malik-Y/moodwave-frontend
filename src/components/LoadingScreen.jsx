@@ -11,11 +11,11 @@ export default function LoadingScreen() {
         async function runSync() {
             const token = localStorage.getItem("authToken");
 
-            await fetch("http://127.0.0.1:8000/api/mood-sync/", {
+            await fetch("https://moodwave-backend.vercel.app/api/mood-sync/", {
                 method: "POST",
                 headers: {"Authorization": `Token ${token}`},
             });
-            await fetch("http://127.0.0.1:8000/api/user-info/", {
+            await fetch("https://moodwave-backend.vercel.app/api/user-info/", {
                 headers: {Authorization: `Token ${token}`}
             });
 

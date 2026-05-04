@@ -27,9 +27,9 @@ function Profile() {
       const headers = { Authorization: `Token ${token}` };
 
       const [infoResp, statsResp, playlistsResp] = await Promise.all([
-        fetch("http://127.0.0.1:8000/api/user-info/", { headers }),
-        fetch("http://127.0.0.1:8000/api/user-stats/", { headers }),
-        fetch("http://127.0.0.1:8000/api/user-playlists/", { headers }),
+        fetch("https://moodwave-backend.vercel.app/api/user-info/", { headers }),
+        fetch("https://moodwave-backend.vercel.app/api/user-stats/", { headers }),
+        fetch("https://moodwave-backend.vercel.app/api/user-playlists/", { headers }),
       ]);
 
       setInfo(await infoResp.json());

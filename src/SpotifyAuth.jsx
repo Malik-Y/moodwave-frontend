@@ -8,7 +8,7 @@ function SpotifyAuth() {
   async function handleSpotify() {
     const token = localStorage.getItem("authToken");
 
-    const response = await fetch("http://127.0.0.1:8000/api/spotify/start/", {
+    const response = await fetch("https://moodwave-backend.vercel.app/api/spotify/start/", {
       headers: {
         "Authorization": `Token ${token}`
       }

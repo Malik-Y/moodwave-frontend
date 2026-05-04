@@ -17,7 +17,7 @@ function HomePage() {
     useEffect(() => {
         async function fetchMoods() {
             const token = localStorage.getItem("authToken");
-            const resp = await fetch("http://127.0.0.1:8000/api/user-info/", {
+            const resp = await fetch("https://moodwave-backend.vercel.app/api/user-info/", {
                 headers: { "Authorization": `Token ${token}` }
             });
 
