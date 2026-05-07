@@ -20,12 +20,12 @@ function Login() {
   try {
     setError("");
 
-   const response = await fetch("https://moodwave-6b5s.onrender.com/login/", {
+  const response = await fetch("https://moodwave-6b5s.onrender.com/login/", {
   method: "POST",
   headers: {
-    "Content-Type": "application/x-www-form-urlencoded",
+    "Content-Type": "application/json",
   },
-  body: new URLSearchParams({
+  body: JSON.stringify({
     username: Username,
     password: password,
   }),
