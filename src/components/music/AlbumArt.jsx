@@ -4,7 +4,7 @@ export default function AlbumArt({ current, immersiveMode, setImmersiveMode }) {
       className={`
         transition-all duration-500 cursor-pointer rounded-2xl overflow-hidden
         ${immersiveMode
-          ? "w-[90vw] h-[90vw] md:w-[65vh] md:h-[65vh] mt-25"
+          ? "w-[90vw] h-[90vw] md:w-[65vh] md:h-[65vh]"
           : "w-88 h-88 md:w-120 md:h-120"}
       `}
       onClick={() => setImmersiveMode(true)}

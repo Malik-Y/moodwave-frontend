@@ -189,6 +189,7 @@ function Musicplayer() {
 
     return (
         <div className="relative w-screen h-screen overflow-hidden">
+            <div className="absolute inset-0 -z-10 pointer-events-none">
             <Galaxy
                 mouseRepulsion={false}
                 mouseInteraction={false}
@@ -197,7 +198,7 @@ function Musicplayer() {
                 saturation={0.8}
                 hueShift={101}
             />
-
+            </div>
             {/* SoundCloud player */}
             <iframe
                 ref={iframeRef}
@@ -221,8 +222,8 @@ function Musicplayer() {
                 </div>
             )}
 
-            <div className="w-full text-white">
-                <div className="flex flex-col items-center px-4 mt-20">
+            <div className="w-full text-white relative z-20">
+                  <div className="flex flex-col items-center px-4 mt-20 relative z-20">
                     {/* Header & back button */}
                     <HeaderBar
                         playlistId={playlistId}
@@ -233,11 +234,13 @@ function Musicplayer() {
                     />
 
                     {/* Album Art */}
+                      <div className="relative z-10">
                     <AlbumArt
                         current={current}
                         immersiveMode={immersiveMode}
                         setImmersiveMode={setImmersiveMode}
                     />
+                      </div>
 
                     {immersiveMode && (
                         <button
@@ -249,15 +252,17 @@ function Musicplayer() {
                     )}
 
                     {/* Song Info */}
+                      <div className="relative z-30">
                     <SongInfo
                         current={current}
                         immersiveMode={immersiveMode}
                         playlistOpen={playlistOpen}
                         setPlaylistOpen={setPlaylistOpen}
-                    />
+                    /></div>
 
                     {/* Controls */}
-                    <MusicControls
+                   <div className="relative z-50 pointer-events-auto">
+                      <MusicControls
                         immersiveMode={immersiveMode}
                         isPlaying={isPlaying}
                         togglePlayPause={handlePlayPause}
@@ -265,7 +270,8 @@ function Musicplayer() {
                         nextSong={nextSong}
                         reloadRecommendations={reloadRecommendations}
                         playlistId={playlistId}
-                    />
+                      />
+                    </div>
 
                     {/* Queue Drawer */}
                     <QueueDrawer
