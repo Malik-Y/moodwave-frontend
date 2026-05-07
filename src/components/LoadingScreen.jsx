@@ -11,10 +11,18 @@ export default function LoadingScreen() {
         async function runSync() {
             const token = localStorage.getItem("authToken");
 
-            await fetch("https://moodwave-6b5s.onrender.com/api/mood-sync/", {
+            const res = await fetch("https://moodwave-6b5s.onrender.com/api/mood-sync/", {
                 method: "POST",
-                headers: {"Authorization": `Token ${token}`},
+                headers: {
+                    "Authorization": `Token ${token}`,
+                    "Content-Type": "application/json",
+                },
             });
+
+            if (!res.ok) {
+                const text = await res.text();
+                console.error("mood-sync failed:", res.status, text);
+            }
             await fetch("https://moodwave-6b5s.onrender.com/api/user-info/", {
                 headers: {Authorization: `Token ${token}`}
             });
