@@ -188,7 +188,7 @@ function Musicplayer() {
 
 
     return (
-        <div className="relative w-screen pointer-events-none h-screen overflow-hidden">
+        <div className="relative w-screen h-screen overflow-hidden">
             <Galaxy
                 mouseRepulsion={false}
                 mouseInteraction={false}
@@ -201,10 +201,9 @@ function Musicplayer() {
             {/* SoundCloud player */}
             <iframe
                 ref={iframeRef}
-                style={{
-                    display: "none",
-                    pointerEvents: "none"
-                }}
+                style={{display: "none"}}
+                allow="autoplay; encrypted-media;"
+                src="https://w.soundcloud.com/player/?url=https://soundcloud.com/partyomo/lasers"
             />
 
             {!playerReady && (
@@ -222,7 +221,7 @@ function Musicplayer() {
                 </div>
             )}
 
-            <div className="relative z-10 w-full text-white">
+            <div className="w-full text-white">
                 <div className="flex flex-col items-center px-4 mt-20">
                     {/* Header & back button */}
                     <HeaderBar
@@ -269,7 +268,6 @@ function Musicplayer() {
                     />
 
                     {/* Queue Drawer */}
-                    <div className="fixed right-0 top-0 z-50">
                     <QueueDrawer
                         playlistOpen={playlistOpen}
                         playlist={playlist}
@@ -277,7 +275,6 @@ function Musicplayer() {
                         setCurrentIndex={setCurrentIndex}
                         setNamingPlaylist={setNamingPlaylist}
                     />
-                    </div>
 
                     {/* Name Playlist Popup */}
                     <NamePlaylist
