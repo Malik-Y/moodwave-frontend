@@ -47,15 +47,10 @@ function Musicplayer() {
     });
 
     /* Initialize Soundcloud */
-   useEffect(() => {
+    useEffect(() => {
     const interval = setInterval(() => {
         if (iframeRef.current && window.SC && !widgetRef.current) {
             widgetRef.current = window.SC.Widget(iframeRef.current);
-
-            widgetRef.current.bind(window.SC.Widget.Events.FINISH, () => {
-                nextSongRef.current();
-            });
-
             clearInterval(interval);
         }
     }, 200);
@@ -116,6 +111,7 @@ function Musicplayer() {
         setPlayerReady(true);
     };
 
+    widgetRef.current.bind(window.SC.Widget.Events.READY, onReady);
 
     return () => {
         widgetRef.current?.unbind(window.SC.Widget.Events.READY, onReady);
@@ -167,7 +163,7 @@ function Musicplayer() {
         setCurrentIndex((i) => (i - 1 + playlist.length) % playlist.length);
     };
 
-    const current = playlist?.[currentIndex] || null;
+    const current = playlist[currentIndex];
 
     /* Save playlist */
     async function handleSavePlaylist(name, description) {
@@ -198,8 +194,8 @@ function Musicplayer() {
 
 
     return (
-        <div className="relative w-screen h-screen overflow-hidden">
-            <Galaxy className="pointer-events-none"
+        <div className="relative w-screen pointer-events-none h-screen overflow-hidden">
+            <Galaxy
                 mouseRepulsion={false}
                 mouseInteraction={false}
                 density={2.5}
