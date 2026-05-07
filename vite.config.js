@@ -10,6 +10,7 @@ export default defineConfig({
     allowedHosts: [
       'heterogynous-bimonthly-aundrea.ngrok-free.dev',
       'moodwave-frontend.vercel.app',
+        'https://moodwave-6b5s.onrender.com',
     ]
   }
 });
