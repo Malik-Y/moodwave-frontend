@@ -48,15 +48,20 @@ function Musicplayer() {
 
     /* Initialize Soundcloud */
     useEffect(() => {
-    const interval = setInterval(() => {
         if (iframeRef.current && window.SC && !widgetRef.current) {
             widgetRef.current = window.SC.Widget(iframeRef.current);
-            clearInterval(interval);
-        }
-    }, 200);
 
-    return () => clearInterval(interval);
-}, []);
+            widgetRef.current.bind(window.SC.Widget.Events.READY, () => {
+                widgetRef.current.pause();
+                setIsPlaying(false);
+
+                widgetRef.current.bind(window.SC.Widget.Events.FINISH, () => {
+                    console.log("⚡ FINISH fired — calling nextSong()");
+                    nextSongRef.current();
+                });
+            });
+        }
+    }, []);
 
     /* Fetch playlist */
     useEffect(() => {
@@ -69,9 +74,7 @@ function Musicplayer() {
                     {headers: {Authorization: `Token ${token}`}}
                 );
                 const data = await resp.json();
-                setPlaylist(
-                (data.songs || []).filter(song => song && song.soundcloud_url)
-                );
+                setPlaylist(data.tracks || []);
                 setCurrentIndex(0);
                 return;
             }
@@ -90,33 +93,24 @@ function Musicplayer() {
 
     /* Handle current song changing */
     useEffect(() => {
-    if (!widgetRef.current) return;
-    if (!playlist.length) return;
+        if (!widgetRef.current || !playlist.length) return;
 
-    const track = playlist[currentIndex];
+        const track = playlist[currentIndex];
+        if (!track?.soundcloud_url) return;
 
-    if (!track || !track.soundcloud_url) {
-        console.warn("Skipping invalid track", track);
-        return;
-    }
+        console.log("Loading:", track.soundcloud_url);
 
-    widgetRef.current.load(track.soundcloud_url, {
-        auto_play: false,
-        show_comments: false,
-    });
+        widgetRef.current.load(track.soundcloud_url, {
+            auto_play: false,
+            show_comments: false,
+        });
 
-    const onReady = () => {
-        widgetRef.current.play();
-        setIsPlaying(true);
-        setPlayerReady(true);
-    };
-
-    widgetRef.current.bind(window.SC.Widget.Events.READY, onReady);
-
-    return () => {
-        widgetRef.current?.unbind(window.SC.Widget.Events.READY, onReady);
-    };
-}, [currentIndex, playlist]);
+        widgetRef.current.bind(window.SC.Widget.Events.READY, () => {
+            widgetRef.current.play();
+            setIsPlaying(true);
+            setPlayerReady(true);
+        });
+    }, [currentIndex, playlist]);
 
     /* Reload recommendations */
     async function reloadRecommendations() {
