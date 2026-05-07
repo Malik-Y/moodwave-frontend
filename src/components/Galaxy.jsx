@@ -177,7 +177,7 @@ function Galaxy({
   hueShift = 140,
   disableAnimation = false,
   speed = 1.0,
-  mouseInteraction = false,
+  mouseInteraction = true,
   glowIntensity = 0.3,
   saturation = 0.0,
   mouseRepulsion = true,
