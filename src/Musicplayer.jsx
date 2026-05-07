@@ -189,7 +189,7 @@ function Musicplayer() {
 
     return (
         <div className="relative w-screen h-screen overflow-hidden">
-            <div className="absolute inset-0 -z-10 pointer-events-none">
+            <div className="absolute inset-0 pointer-events-none">
             <Galaxy
                 mouseRepulsion={false}
                 mouseInteraction={false}
