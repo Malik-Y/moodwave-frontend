@@ -208,13 +208,13 @@ function Musicplayer() {
 
             {!playerReady && (
                 <div
-                    className="w-screen h-screen flex items-center justify-center text-white absolute inset-0 z-50 bg-black/40 backdrop-blur-md">
+                    className="w-screen h-screen flex items-center justify-center text-white absolute inset-0 z-50 bg-black/40 pointer-events-none backdrop-blur-md">
                     <p className="text-white/70 text-xl animate-pulse">Loading Player...</p>
                 </div>
             )}
             {reloading && (
                 <div
-                    className="w-screen h-screen flex items-center justify-center text-white absolute inset-0 z-50 bg-black/40 backdrop-blur-md">
+                    className="w-screen h-screen flex items-center justify-center text-white absolute inset-0 z-50 bg-black/40 pointer-events-none backdrop-blur-md">
                     <p className="text-white/70 text-xl animate-pulse">
                         Refreshing Recommendations…
                     </p>
