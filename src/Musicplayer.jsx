@@ -70,7 +70,7 @@ function Musicplayer() {
 
             if (playlistId) {
                 const resp = await fetch(
-                    `https://moodwave-6b5s.onrender.com/api/get-playlist/?id=${playlistId}`,
+                    `https://moodwave-backend.vercel.app/api/get-playlist/?id=${playlistId}`,
                     {headers: {Authorization: `Token ${token}`}}
                 );
                 const data = await resp.json();
@@ -82,7 +82,7 @@ function Musicplayer() {
             }
 
             const resp = await fetch(
-                `https://moodwave-6b5s.onrender.com/api/recommendations/?mood=${mood}`,
+                `https://moodwave-backend.vercel.app/api/recommendations/?mood=${mood}`,
                 {headers: {Authorization: `Token ${token}`}}
             );
             const data = await resp.json();
@@ -131,7 +131,7 @@ function Musicplayer() {
         const token = localStorage.getItem("authToken");
 
         const resp = await fetch(
-            `https://moodwave-6b5s.onrender.com/api/recommendations/?mood=${mood}`,
+            `https://moodwave-backend.vercel.app/api/recommendations/?mood=${mood}`,
             {headers: {Authorization: `Token ${token}`}}
         );
         const data = await resp.json();
