@@ -48,7 +48,21 @@ function Musicplayer() {
 
     /* Initialize Soundcloud */
     useEffect(() => {
-        if (iframeRef.current && window.SC && !widgetRef.current) {
+        let cancelled = false;
+        let retryTimer = null;
+
+        function trySetupWidget() {
+            if (cancelled || widgetRef.current) return;
+
+            // SoundCloud's widget script (w.soundcloud.com/player/api.js) is
+            // loaded from a third-party domain and can arrive after this
+            // component mounts, especially on slower connections. Keep
+            // retrying instead of silently giving up.
+            if (!iframeRef.current || !window.SC) {
+                retryTimer = setTimeout(trySetupWidget, 200);
+                return;
+            }
+
             widgetRef.current = window.SC.Widget(iframeRef.current);
 
             widgetRef.current.bind(window.SC.Widget.Events.READY, () => {
@@ -61,6 +75,13 @@ function Musicplayer() {
                 });
             });
         }
+
+        trySetupWidget();
+
+        return () => {
+            cancelled = true;
+            if (retryTimer) clearTimeout(retryTimer);
+        };
     }, []);
 
     /* Fetch playlist */
