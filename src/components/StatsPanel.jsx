@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { PieChart, Pie, Cell, ResponsiveContainer } from "recharts";
+import { apiGet } from "./API.js";
 
 export default function StatsPanel({ onAnalyzeMoreSongs }) {
   const [stats, setStats] = useState(null);
@@ -14,26 +15,20 @@ export default function StatsPanel({ onAnalyzeMoreSongs }) {
     "#9333ea",
   ];
 
-  useEffect(() => {
+
+useEffect(() => {
     async function fetchStats() {
-      try {
-        const token = localStorage.getItem("authToken");
-
-        const resp = await fetch("https://moodwave-6b5s.onrender.com/api/user-stats/", {
-          headers: { Authorization: `Token ${token}` },
-
-        });
-
-        const data = await resp.json();
-        setStats(data);
-      } catch (err) {
-        console.error("Failed to load stats:", err);
-      }
-      setLoading(false);
+        const { ok, data, error } = await apiGet("/api/user-stats/");
+        if (!ok) {
+            console.error("Failed to load stats:", error);
+            setStats(null);
+        } else {
+            setStats(data);
+        }
+        setLoading(false);
     }
-
     fetchStats();
-  }, []);
+}, []);
 
   if (loading) {
     return <p className="text-white/70 text-center">Loading...</p>;

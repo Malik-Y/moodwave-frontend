@@ -4,6 +4,7 @@ import { User } from "lucide-react";
 import MoodOrbSection from "./MoodOrbSection.jsx";
 import Tabs from "./Tabs.jsx";
 import moodDescriptions from "./moodDescription.js";
+import { apiGet } from "./API.js";
 
 
 function HomePage() {
@@ -14,18 +15,12 @@ function HomePage() {
     const [collapsed, setCollapsed] = useState(true);
     const [focusMode, setFocusMode] = useState(true);
 
+
     useEffect(() => {
         async function fetchMoods() {
-            const token = localStorage.getItem("authToken");
-            const resp = await fetch("https://moodwave-6b5s.onrender.com/api/user-info/", {
-                headers: { "Authorization": `Token ${token}` }
-            });
-
-            const data = await resp.json();
-            setMoods([...new Set(data.moods)]);
-
+            const { ok, data } = await apiGet("/api/user-info/");
+            if (ok) setMoods([...new Set(data.moods)]);
         }
-
         fetchMoods();
     }, []);
 
