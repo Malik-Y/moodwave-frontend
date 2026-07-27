@@ -13,6 +13,9 @@ function Musicplayer() {
     const location = useLocation();
     const navigate = useNavigate();
 
+
+
+
     const playlistId = location.state?.playlistId ?? null;
     const playlistName = location.state?.playlistName ?? null;
     const mood = playlistId ? null : location.state?.mood || "Energized";
@@ -28,15 +31,9 @@ function Musicplayer() {
     const [newPlaylistName, setNewPlaylistName] = useState("");
     const [PlaylistDescription, setNewPlaylistDescription] = useState("");
 
-    // Real React state (not just a ref) so the "song changing" effect
-    // correctly re-runs once the widget becomes usable, instead of
-    // silently doing nothing if playlist data arrives before the widget does.
-    const [scReady, setScReady] = useState(false);
-
     const iframeRef = useRef(null);
     const widgetRef = useRef(null);
 
-    const current = playlist[currentIndex];
 
     /* next song logic */
     const nextSong = () => {
@@ -53,7 +50,6 @@ function Musicplayer() {
     useEffect(() => {
         let cancelled = false;
         let retryTimer = null;
-        let isFirstReady = true;
 
         function trySetupWidget() {
             if (cancelled || widgetRef.current) return;
@@ -68,30 +64,15 @@ function Musicplayer() {
             }
 
             widgetRef.current = window.SC.Widget(iframeRef.current);
-            setScReady(true);
 
-            // Bound exactly once, for the widget's whole lifetime - the
-            // widget re-fires READY every time .load() swaps in a new
-            // track, so this handles every future track change too rather
-            // than needing to be re-bound (and stacked) each time.
             widgetRef.current.bind(window.SC.Widget.Events.READY, () => {
-                if (isFirstReady) {
-                    // This is the hidden placeholder track loaded at mount -
-                    // just silence it, don't auto-play it.
-                    isFirstReady = false;
-                    widgetRef.current.pause();
-                    setIsPlaying(false);
-                    return;
-                }
+                widgetRef.current.pause();
+                setIsPlaying(false);
 
-                widgetRef.current.play();
-                setIsPlaying(true);
-                setPlayerReady(true);
-            });
-
-            widgetRef.current.bind(window.SC.Widget.Events.FINISH, () => {
-                console.log("⚡ FINISH fired — calling nextSong()");
-                nextSongRef.current();
+                widgetRef.current.bind(window.SC.Widget.Events.FINISH, () => {
+                    console.log("⚡ FINISH fired — calling nextSong()");
+                    nextSongRef.current();
+                });
             });
         }
 
@@ -133,12 +114,10 @@ function Musicplayer() {
 
     /* Handle current song changing */
     useEffect(() => {
-        if (!playlist.length) return;
+        if (!widgetRef.current || !playlist.length) return;
 
         const track = playlist[currentIndex];
         if (!track?.soundcloud_url) return;
-
-        if (!scReady || !widgetRef.current) return;
 
         console.log("Loading:", track.soundcloud_url);
 
@@ -146,12 +125,15 @@ function Musicplayer() {
             auto_play: false,
             show_comments: false,
         });
-        // Playback + isPlaying/playerReady are handled by the READY
-        // listener bound once in the SoundCloud init effect above.
-    }, [currentIndex, playlist, scReady]);
 
-    /* Reload recommendations - actual loading is handled by the
-       "song changing" effect above once `playlist`/`currentIndex` update */
+        widgetRef.current.bind(window.SC.Widget.Events.READY, () => {
+            widgetRef.current.play();
+            setIsPlaying(true);
+            setPlayerReady(true);
+        });
+    }, [currentIndex, playlist]);
+
+    /* Reload recommendations */
     async function reloadRecommendations() {
         if (playlistId) return;
 
@@ -167,7 +149,15 @@ function Musicplayer() {
 
         setPlaylist(data.songs || []);
         setCurrentIndex(0);
-        setReloading(false);
+
+        if (widgetRef.current && data.songs?.length > 0) {
+            widgetRef.current.load(data.songs[0].soundcloud_url, {
+                auto_play: true,
+                show_comments: false,
+            });
+            setIsPlaying(true);
+            setReloading(false);
+        }
     }
 
     /* Manual controls */
@@ -187,6 +177,8 @@ function Musicplayer() {
         if (!playlist.length) return;
         setCurrentIndex((i) => (i - 1 + playlist.length) % playlist.length);
     };
+
+    const current = playlist[currentIndex];
 
     /* Save playlist */
     async function handleSavePlaylist(name, description) {
